@@ -9,9 +9,22 @@ const displayPhoneData = phones => {
     const phonesContainer = document.getElementById('phones-container');
     phonesContainer.textContent = '';
     // phonesContainer.classList.add('col');
+
+    // Displaying 20 Phones per page only
+    phones = phones.slice(0, 20);
+
+    // If No phone found in the search
+    const noPhoneFound = document.getElementById('no-phone-found-message');
+    if(phones.length === 0){
+        noPhoneFound.classList.remove('d-none');
+    }
+    else{
+        noPhoneFound.classList.add('d-none');
+    }
     
+    // Get All phone data from Phones array
     phones.forEach(phone => {
-        console.log(phones)
+        // console.log(phones)
         const phonesDiv = document.createElement('div');
         phonesDiv.classList.add('col')
         phonesDiv.innerHTML = `
@@ -39,4 +52,5 @@ document.getElementById('btn-search').addEventListener('click', function(){
 })
 
 
-loadPhones();
+// Default Phone Data Loading 
+// loadPhones();
