@@ -43,14 +43,31 @@ const displayPhoneData = phones => {
 
     });
 
+    // Stop Spinner
+    toggelSpinner(false);
+
 }
 
+// Event Listener by clicking the Search Button
 document.getElementById('btn-search').addEventListener('click', function(){
+    // Start Spinner
+    toggelSpinner(true);
     const searchField = document.getElementById('search-field');
     const searchText = searchField.value;
     loadPhones(searchText);
-})
+});
 
+
+const toggelSpinner = isLoading => {
+    const spinnerSection = document.getElementById('loader');
+
+    if(isLoading === true){
+        spinnerSection.classList.remove('d-none');
+    }
+    else{
+        spinnerSection.classList.add('d-none');
+    }
+}
 
 // Default Phone Data Loading 
 // loadPhones();
