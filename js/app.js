@@ -42,7 +42,7 @@ const displayPhoneData = (phones, dataLimit) => {
                 <h4 class="card-title">${phone.phone_name}</h4>
                 <h6>${phone.brand}</h6>
                 <p class="card-text">${phone.slug} <br> This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                <button onclick="loadPhoneDetails('${phone.slug})" class="btn btn-primary">Show Details</button>
+                <button onclick="loadPhoneDetails('${phone.slug}')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#phoneDetailModal">Show Details</button>
             </div>
         </div>
     `;
@@ -95,12 +95,34 @@ document.getElementById('btn-show-all').addEventListener('click', function(){
 });
 
 
-const loadPhoneDetails = async phoneId =>{
-    const url = `https://openapi.programming-hero.com/api/phone/${phoneId}`
+const loadPhoneDetails = async id =>{
+    const url = `https://openapi.programming-hero.com/api/phone/${id}`
     const res = await fetch(url);
-    const data = res.json();
-    console.log(data);
+    const data = await res.json();
+    displayPhoneDetails(data.data);
+}
+
+const displayPhoneDetails = phone => {
+    console.log(phone)
+    const phoneModalTitle = document.getElementById('phoneModalTitleLabel');
+    phoneModalTitle.innerText = phone.name;
+    const phoneModalImage = document.getElementById('modal-image');
+    phoneModalImage.innerHTML = `
+        <img src="${phone.image}">
+    `
+    const phoneDetailBody = document.getElementById('modal-details');
+    phoneDetailBody.innerHTML = `
+        <h6>Brand: ${phone.brand ? phone.brand : 'No Phone Brand Information'}</h6>
+        <p>Release Date: ${phone.mainFeatures.releaseDate ? phone.mainFeatures.releaseDate : 'No Release Data Information'}</p>
+        <p>Chipset : ${phone.mainFeatures.chipSet ? phone.mainFeatures.chipSet : 'No Chipse Information'}</p>
+        <p>Display: ${phone.mainFeatures.displaySize ? phone.mainFeatures.displaySize : 'No Display Information'}</p>
+        <p>Storage: ${phone.mainFeatures.storage ? phone.mainFeatures.storage : 'No Storage Information'}</p>
+        <p>Memory Details: ${phone.mainFeatures.memory ? phone.mainFeatures.memory : 'No Phone Memory Information'}</p>
+        <p>Bluetooth: ${phone.others ? phone.others.Bluetooth : 'No Bluetooth Information'}</p>
+        <p>Connectivity Type: ${phone.others ? phone.others.USB : 'No Connectivity Information'}</p>
+        <p>Sensors: ${phone.mainFeatures.sensors}</p>
+    `
 }
 
 // Default Phone Data Loading 
-// loadPhones();
+loadPhones('apple');
